@@ -1,0 +1,11 @@
+.poster-container {
+  width: 100%; /* ou une largeur fixe selon votre design */
+  height: 400px; /* hauteur fixe pour uniformiser la grille */
+  overflow: hidden; /* masque les débordements de l'image */
+}
+
+.poster-image {
+  width: 100%; /* assure que l'image couvre la largeur du conteneur */
+  height: 100%; /* assure que l'image couvre la hauteur du conteneur */
+  object-fit: cover; /* ajuste l'image pour couvrir le conteneur, la coupe si nécessaire */
+}

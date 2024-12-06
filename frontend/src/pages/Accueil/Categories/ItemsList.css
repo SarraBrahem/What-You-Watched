@@ -1,0 +1,9 @@
+.item-container {
+  min-width: 270px; /* Largeur par défaut pour md et plus */
+}
+
+@media (max-width: 768px) { /* Taille 'md' en Tailwind par défaut */
+  .item-container {
+      min-width: 150px; /* Taille réduite pour les petits écrans */
+  }
+}

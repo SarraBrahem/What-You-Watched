@@ -1,0 +1,73 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Réinitialise les marges et les paddings */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.white-section {
+  background-color: #000000; /* Couleur de fond blanc */
+  color: #bcbcbc; /* Couleur du texte noir pour contraster */
+  padding: 25px; /* Ajoutez du padding selon les besoins */
+  /* Définissez une hauteur spécifique si nécessaire, par exemple: height: 200px; */
+}
+
+
+.main-content {
+  background-color: #1d1d1d; /* Couleur de fond noir */
+  color: #fff; /* Couleur du texte blanc pour contraster */
+  padding: 20px; /* Ajoutez du padding selon les besoins */
+  min-height: calc(
+    100vh - 200px
+  ); /* Assurez-vous que cela prend le reste de la hauteur */
+  /* La hauteur est calculée en soustrayant la hauteur de la partie haute blanche */
+}
+
+/* Style général pour les boutons de navigation */
+.btn-navigation {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0); /* Semi-transparent */
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 60px; /* Augmenté de 40px à 60px pour plus d'épaisseur */
+  border-radius: 50%;
+  display: flex;
+  overflow-x: "hidden";
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  font-size: 50px; /* Augmenté pour agrandir le texte */
+  padding: 10px; /* Ajouté pour plus d'espace à l'intérieur */
+}
+
+.btn-left {
+  left: 10px;
+}
+
+.btn-right {
+  right: 10px;
+}
+
+/* Style pour améliorer l'apparence au survol */
+.btn-navigation:hover {
+  background-color: rgba(88, 88, 88, 0.8); /* Plus foncé au survol */
+}
+
+.input-placeholder::placeholder {
+  color: rgb(255, 255, 255);
+  font-weight: normal;
+  opacity: 0.4;
+}

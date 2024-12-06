@@ -1,0 +1,619 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API de gestion de films",
+        "description": "Cette API permet de gérer une collection de films, acteurs, séries et utilisateurs.",
+        "version": "1.0.0"
+    },
+    "host": "localhost:4000",
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/utilisateurs": {
+            "get": {
+                "summary": "Obtient tous les utilisateurs",
+                "description": "Renvoie une liste de tous les utilisateurs inscrits, triés par date de création.",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/Utilisateur" }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur"
+                    }
+                }
+            }
+        },
+        "/utilisateurs/{id}": {
+            "get": {
+                "summary": "Obtient un utilisateur unique",
+                "description": "Renvoie les détails d'un utilisateur par son ID.",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string",
+                    "description": "Identifiant unique de l'utilisateur"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Détails de l'utilisateur",
+                        "schema": {
+                            "$ref": "#/definitions/Utilisateur"
+                        }
+                    },
+                    "400": {
+                        "description": "ID fourni invalide"
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé"
+                    },
+                    "500": {
+                        "description": "Erreur du serveur"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Supprime un utilisateur",
+                "description": "Supprime un utilisateur par son ID.",
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur supprimé avec succès"
+                    },
+                    "400": {
+                        "description": "ID fourni invalide"
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé"
+                    },
+                    "500": {
+                        "description": "Erreur du serveur"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Met à jour les informations d'un utilisateur",
+                "description": "Met à jour les informations pour un utilisateur par son ID.",
+                "parameters": [{
+                    "name": "userData",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "name": { "type": "string" },
+                            "email": { "type": "string" }
+                        }
+                    },
+                    "description": "Données à mettre à jour dans le profil utilisateur"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur mis à jour avec succès",
+                        "schema": {
+                            "$ref": "#/definitions/Utilisateur"
+                        }
+                    },
+                    "400": {
+                        "description": "ID fourni invalide"
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé"
+                    },
+                    "500": {
+                        "description": "Erreur du serveur"
+                    }
+                }
+            }
+        },
+        "/films": {
+            "get": {
+                "summary": "Liste tous les films",
+                "description": "Renvoie une liste de tous les films dans la base de données.",
+                "responses": {
+                    "200": {
+                        "description": "Une liste de films",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/Film" }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crée un nouveau film",
+                "description": "Ajoute un nouveau film à la collection.",
+                "parameters": [{
+                    "in": "body",
+                    "name": "film",
+                    "description": "Les données du film à créer",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/Film"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Film créé"
+                    }
+                }
+            }
+        },
+        "/films/{id}": {
+            "get": {
+                "summary": "Trouve un film par son ID",
+                "description": "Renvoie un seul film correspondant à l'ID fourni.",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Un film",
+                        "schema": {
+                            "$ref": "#/definitions/Film"
+                        }
+                    }
+                }
+            }
+        },
+        "/actors/{id}": {
+            "get": {
+                "summary": "Obtient les détails d'un acteur",
+                "description": "Renvoie les détails d'un acteur spécifique par son ID.",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Détails de l'acteur",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": { "type": "integer" },
+                                "nom": { "type": "string" },
+                                "genre": { "type": "string" },
+                                "photo": { "type": "string" },
+                                "biographie": { "type": "string" },
+                                "date_naissance": { "type": "string" },
+                                "lieu_naissance": { "type": "string" },
+                                "popularite": { "type": "number" },
+                                "films": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": { "type": "integer" },
+                                            "titre": { "type": "string" },
+                                            "role": { "type": "string" },
+                                            "poster": { "type": "string" }
+                                        }
+                                    }
+                                },
+                                "series": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": { "type": "integer" },
+                                            "titre": { "type": "string" },
+                                            "role": { "type": "string" },
+                                            "poster": { "type": "string" }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide"
+                    },
+                    "404": {
+                        "description": "Acteur non trouvé"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/actors/search": {
+            "get": {
+                "summary": "Recherche des acteurs",
+                "description": "Recherche des acteurs par nom.",
+                "parameters": [{
+                    "name": "q",
+                    "in": "query",
+                    "required": true,
+                    "type": "string",
+                    "description": "Le nom de l'acteur à rechercher"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Liste des acteurs trouvés",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": { "type": "integer" },
+                                    "nom": { "type": "string" },
+                                    "photo": { "type": "string" },
+                                    "popularite": { "type": "number" }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/series/search": {
+            "get": {
+                "summary": "Recherche de séries par nom",
+                "description": "Retourne une liste de séries qui correspondent à un terme de recherche donné.",
+                "parameters": [{
+                    "name": "q",
+                    "in": "query",
+                    "required": true,
+                    "description": "Le nom de la série à rechercher",
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Liste des séries trouvées",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/Serie" }
+                        }
+                    },
+                    "404": {
+                        "description": "Aucune série trouvée"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/series/discover": {
+            "get": {
+                "summary": "Découverte de nouvelles séries",
+                "description": "Retourne une liste de séries populaires.",
+                "responses": {
+                    "200": {
+                        "description": "Liste de séries populaires",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/Serie" }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/series/{id}": {
+            "get": {
+                "summary": "Obtient les détails d'une série spécifique",
+                "description": "Retourne les détails d'une série, incluant le synopsis, les saisons, et les informations de casting.",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "L'ID de la série",
+                    "type": "integer"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Détails de la série",
+                        "schema": {
+                            "$ref": "#/definitions/SerieDetails"
+                        }
+                    },
+                    "404": {
+                        "description": "Série non trouvée"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/series/{id}/seasons/{number}": {
+            "get": {
+                "summary": "Obtient les détails d'une saison spécifique d'une série",
+                "description": "Retourne les détails d'une saison particulière, incluant tous les épisodes et des informations supplémentaires.",
+                "parameters": [{
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "L'ID de la série",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "number",
+                        "in": "path",
+                        "required": true,
+                        "description": "Le numéro de la saison",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de la saison",
+                        "schema": {
+                            "$ref": "#/definitions/SeasonDetails"
+                        }
+                    },
+                    "404": {
+                        "description": "Saison non trouvée"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/utilisateurs/{id}/seriesWatchlist": {
+            "post": {
+                "summary": "Ajoute une série à la liste de surveillance d'un utilisateur",
+                "description": "Ajoute une série avec l'ID TMDB, la saison et l'épisode à la liste de surveillance de l'utilisateur.",
+                "parameters": [{
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Identifiant unique de l'utilisateur"
+                    },
+                    {
+                        "name": "seriesData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "tmdbId": {
+                                    "type": "integer",
+                                    "description": "ID TMDB de la série à ajouter"
+                                },
+                                "saison": {
+                                    "type": "integer",
+                                    "description": "Numéro de la saison à ajouter"
+                                },
+                                "episode": {
+                                    "type": "integer",
+                                    "description": "Numéro de l'épisode à ajouter"
+                                }
+                            }
+                        },
+                        "description": "Données de la série à ajouter à la liste de surveillance"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Série ajoutée avec succès à la liste de surveillance",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/SeriesWatchlist" }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé"
+                    },
+                    "500": {
+                        "description": "Erreur du serveur"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Supprime une série de la liste de surveillance de l'utilisateur",
+                "description": "Supprime une série avec l'ID TMDB de la liste de surveillance de l'utilisateur.",
+                "responses": {
+                    "200": {
+                        "description": "Série supprimée avec succès de la liste de surveillance",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/SeriesWatchlist" }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé"
+                    },
+                    "500": {
+                        "description": "Erreur du serveur"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Obtient la liste de surveillance de séries d'un utilisateur",
+                "description": "Renvoie toutes les séries dans la liste de surveillance de l'utilisateur.",
+                "responses": {
+                    "200": {
+                        "description": "Liste de surveillance des séries récupérée avec succès",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/SeriesWatchlist" }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé"
+                    },
+                    "500": {
+                        "description": "Erreur du serveur"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Met à jour la progression d'une série dans la liste de surveillance",
+                "description": "Met à jour la progression de visionnage d'une série spécifique, saison et épisode dans la liste de surveillance de l'utilisateur.",
+                "responses": {
+                    "200": {
+                        "description": "Progression de visionnage de la série mise à jour avec succès",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/SeriesWatchlist" }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur ou série dans la liste de surveillance non trouvée"
+                    },
+                    "500": {
+                        "description": "Erreur du serveur"
+                    }
+                }
+            }
+        },
+        "/utilisateurs/{id}/seriesRecommendations": {
+            "get": {
+                "summary": "Obtient des recommandations de séries basées sur la liste de surveillance de l'utilisateur",
+                "description": "Fournit des recommandations de séries basées sur les genres les plus fréquents dans la liste de surveillance de séries de l'utilisateur.",
+                "responses": {
+                    "200": {
+                        "description": "Recommandations de séries obtenues avec succès",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/Serie" }
+                        }
+                    },
+                    "404": {
+                        "description": "Genre fréquent non trouvé ou utilisateur non trouvé"
+                    },
+                    "500": {
+                        "description": "Erreur du serveur"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Film": {
+            "type": "object",
+            "required": ["id", "titre", "realisateur"],
+            "properties": {
+                "id": { "type": "integer", "format": "int64" },
+                "titre": { "type": "string" },
+                "realisateur": { "type": "string" },
+                "description": { "type": "string" }
+            }
+        },
+        "Serie": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "integer" },
+                "titre": { "type": "string" },
+                "poster": { "type": "string" },
+                "number_of_episodes": { "type": "integer" },
+                "number_of_seasons": { "type": "integer" },
+                "date_sortie": { "type": "string" },
+                "rating": { "type": "number" },
+                "genre": { "type": "array", "items": { "type": "string" } }
+            }
+        },
+        "SerieDetails": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "integer" },
+                "titre": { "type": "string" },
+                "synopsis": { "type": "string" },
+                "poster": { "type": "string" },
+                "background": { "type": "string" },
+                "date_sortie": { "type": "string" },
+                "rating": { "type": "number" },
+                "genre": { "type": "array", "items": { "type": "string" } },
+                "nombre_saisons": { "type": "integer" },
+                "nombre_episodes": { "type": "integer" },
+                "saisons": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SeasonDetails"
+                    }
+                }
+            }
+        },
+        "SeasonDetails": {
+            "type": "object",
+            "properties": {
+                "titre": { "type": "string" },
+                "poster": { "type": "string" },
+                "tmdb_id": { "type": "integer" },
+                "overview": { "type": "string" },
+                "nombre_saison": { "type": "integer" },
+                "date_sortie": { "type": "string" },
+                "rating": { "type": "number" },
+                "episodes": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "titre": { "type": "string" },
+                            "tmdb_id": { "type": "integer" },
+                            "overview": { "type": "string" },
+                            "poster": { "type": "string" },
+                            "numero_episode": { "type": "integer" },
+                            "numero_saison": { "type": "integer" },
+                            "date_sortie": { "type": "string" },
+                            "rating": { "type": "number" },
+                            "cast": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "integer" },
+                                        "name": { "type": "string" },
+                                        "role": { "type": "string" },
+                                        "photo": { "type": "string" }
+                                    }
+                                }
+                            },
+                            "crew": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "integer" },
+                                        "name": { "type": "string" },
+                                        "job": { "type": "string" },
+                                        "photo": { "type": "string" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "SeriesWatchlist": {
+            "type": "object",
+            "required": ["tmdbId", "saison", "episode"],
+            "properties": {
+                "tmdbId": { "type": "integer", "description": "ID TMDB de la série" },
+                "saison": { "type": "integer", "description": "Numéro de la saison dans la liste de surveillance" },
+                "episode": { "type": "integer", "description": "Numéro de l'épisode dans la liste de surveillance" },
+                "progress": { "type": "integer", "description": "Pourcentage de progression de la série regardée" }
+            }
+        },
+        "Utilisateur": {
+            "type": "object",
+            "required": ["id", "name", "email"],
+            "properties": {
+                "id": { "type": "string", "description": "Identifiant unique de l'utilisateur" },
+                "name": { "type": "string", "description": "Nom de l'utilisateur" },
+                "email": { "type": "string", "description": "Email de l'utilisateur" }
+            }
+        }
+    }
+}
